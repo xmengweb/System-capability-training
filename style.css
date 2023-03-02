@@ -40,9 +40,6 @@ table {
   table th {
   white-space: nowrap; /*表头内容强制在一行显示*/
   }
-  table td {
-  white-space: nowrap;
-  }
 
 .container {
   background-color: #fafafa;
