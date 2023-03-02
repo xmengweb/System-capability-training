@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css"
+    integrity="sha512-1PKOgIY59xJ8Co8+NE6FZ+LOAZKjy+KY8iq0G4B3CyeY6wYHN3yt9PW0XpSriVlkMXe40PTKnXrLnZ9+fkDaog=="
+    crossorigin="anonymous" />
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/styles/default.min.css">
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/highlight.min.js"></script>
+  <script>hljs.highlightAll();</script>
+  <link rel="stylesheet" href="style.css" />
+  <title>Rotating Navigation</title>
+</head>
+
+<body>
+  <div class="container">
+    <div class="circle-container">
+      <div class="circle">
+        <button id="close">
+          <i class="fas fa-times"></i>
+        </button>
+        <button id="open">
+          <i class="fas fa-bars"></i>
+        </button>
+      </div>
+    </div>
+
+    <div class="content">
+      <h1 id="二次压降检定系统api">二次压降检定系统Api</h1>
+      <h2 id="接口描述">接口描述</h2>
+      <p>该接口用于模拟二次压降检测仪检定系统相机拍照功能，输出的为模拟相机拍照图像。</p>
+      <h2 id="请求url">请求URL</h2>
+      <p>
+        <a href="http://47.99.88.166:8000/img">http://47.99.88.166:8000/img</a>
+      </p>
+      <h2 id="请求方式">请求方式</h2>
+      <p>Get方法</p>
+      <h2 id="请求参数">请求参数</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>参数名</th>
+            <th>类型</th>
+            <th>必需</th>
+            <th>描述</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>
+              <code>id</code>
+            </td>
+            <td>int</td>
+            <td>否</td>
+            <td>图片序号</td>
+          </tr>
+        </tbody>
+      </table>
+      <h2 id="返回值">返回值</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>参数名</th>
+            <th>类型</th>
+            <th>说明</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>image</td>
+            <td>图片</td>
+            <td>拍照后的图像文件，支持 jpg,png等格式</td>
+          </tr>
+        </tbody>
+      </table>
+      <h2 id="请求示例">请求示例</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>请求地址</th>
+            <th>参数</th>
+            <th>说明</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>
+              <a href="http://47.99.88.166:8000/img?id=1">http://47.99.88.166:8000/img?id=1</a>
+            </td>
+            <td>是</td>
+            <td>参数id可在1-6中任意修改,返回的为指定序号的图片</td>
+          </tr>
+          <tr>
+            <td>
+              <a href="http://47.99.88.166:8000/img">http://47.99.88.166:8000/img</a>
+            </td>
+            <td>否</td>
+            <td>返回的为随机序号图片</td>
+          </tr>
+        </tbody>
+      </table>
+      <p>Java详细请求代码:</p>
+      <p>​复制完整代码并且修改文件名与java类名一致即可运行</p>
+      <div class="post-content">
+        <div class="wp-block-code">
+          <pre>
+            <code class="language-java" data-lang="java">
+  import java.io.*;
+  import java.net.HttpURLConnection;
+  import java.net.URL;
+
+  public class Main {
+      public static void main(String[] args) throws Exception {
+          // 创建URL对象
+          URL url = new URL(&quot;http://47.99.88.166:8000/img&quot;);
+          // 建立连接
+          HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+          // 得到接口响应
+          InputStream in = connection.getInputStream();
+          // 创建文件输出流
+          FileOutputStream out = new FileOutputStream(&quot;./image.jpg&quot;);
+          // 将得到的响应数据复制到输出流中
+          byte[] buffer = new byte[1024];
+          int length;
+          while ((length = in.read(buffer)) &gt; 0) {
+              out.write(buffer, 0, length);
+          }
+          // 关闭流
+          in.close();
+          out.close();
+      }
+  }
+            </code>
+          </pre>
+        </div>
+      </div>
+
+      <p>C#</p>
+      <div class="post-content">
+        <div class="wp-block-code">
+          <pre>
+            <code class="language-c#">
+    namespace c.biancheng.net
+    {
+      class Program
+      {
+        static async Task Main(string[] args)
+        {
+          HttpClient client = new HttpClient();
+          Task&lt;byte[]&gt; imageBytes = client.GetByteArrayAsync(&quot;http://47.99.88.166:8000/img&quot;);
+          File.WriteAllBytes(&quot;image.jpg&quot;, await imageBytes);
+        }
+      }
+    }
+            </code>
+          </pre>
+        </div>
+      </div>
+
+      <h2 id="响应示例">响应示例</h2>
+      <p>
+        <img src="https://cugdemo.oss-cn-hangzhou.aliyuncs.com/image-20230301164908054.png"
+          alt="image-20230301164908054">
+      </p>
+      <p>备注:本接口仅用于模拟实现，不提供真实的拍照服务。</p>
+    </div>
+  </div>
+
+  <nav>
+    <ul>
+      <li><i class="fas fa-home"></i><a href="#"> Home</a></li>
+      <li><i class="fas fa-user-alt"></i><a href="#"> About</a></li>
+      <li><i class="fas fa-envelope"></i><a href="#"> Contact</a></li>
+    </ul>
+  </nav>
+  <script src="script.js"></script>
+</body>
+
+</html>
