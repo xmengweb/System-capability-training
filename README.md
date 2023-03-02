@@ -11,48 +11,53 @@ http://47.99.88.166:8000/img
 
 ## 请求方式
 
-Get
+Get方法
 
 ## 请求参数
 
-无
+| 参数名 | 类型 | 必需 | 描述     |
+| ------ | ---- | ---- | -------- |
+| `id`   | int  | 否   | 图片序号 |
 
 ## 返回值
 
-| 参数名 | 类型    | 说明                              |
-| ------ | ------- | --------------------------------- |
-| image  | jpg图片 | 拍照后的图像文件，仅支持 jpg 格式 |
+| 参数名 | 类型 | 说明                                 |
+| ------ | ---- | ------------------------------------ |
+| image  | 图片 | 拍照后的图像文件，支持 jpg,png等格式 |
 
 ## 请求示例
 
-Java:
+| 请求地址                          | 参数 | 说明                                           |
+| --------------------------------- | ---- | ---------------------------------------------- |
+| http://47.99.88.166:8000/img?id=1 | 是   | 参数id可在1-6中任意修改,返回的为指定序号的图片 |
+| http://47.99.88.166:8000/img      | 否   | 返回的为随机序号图片                           |
+
+Java详细请求代码:
+
+​	复制完整代码并且修改文件名与java类名一致即可运行
 
 ```java
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-public class data {
+public class Main {
     public static void main(String[] args) throws Exception {
-        // Create a URL object
+        // 创建URL对象
         URL url = new URL("http://47.99.88.166:8000/img");
-
-        // Create a connection
+        // 建立连接
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-
-        // Get the response
+        // 得到接口响应
         InputStream in = connection.getInputStream();
-
-        // Create a file output stream
+        // 创建文件输出流
         FileOutputStream out = new FileOutputStream("./image.jpg");
-
-        // Copy the contents of the response to the output stream
+        // 将得到的响应数据复制到输出流中
         byte[] buffer = new byte[1024];
         int length;
         while ((length = in.read(buffer)) > 0) {
             out.write(buffer, 0, length);
         }
-        // Close the streams
+        // 关闭流
         in.close();
         out.close();
     }
@@ -76,4 +81,8 @@ namespace c.biancheng.net
 }
 ````
 
-运行完成后,会将从接口得到的图片保存到当前项目文件中,命名为image.jpg
+## 响应示例
+
+![image-20230301164908054](https://cugdemo.oss-cn-hangzhou.aliyuncs.com/image-20230301164908054.png)
+
+备注:本接口仅用于模拟实现，不提供真实的拍照服务。
